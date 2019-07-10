@@ -23,24 +23,23 @@
 # -------------------------------------------------------------------------------
 
 ####### Type hint definitions ########
-from typing import List, Tuple,TypeVar 
-## Magnetization Vector Typehints
-x_i=TypeVar('x_i',int,float) 
-y_i=TypeVar('y_i',int,float)
-z_i=TypeVar('z_i',int,float)
-listOfPos = List[Tuple[x_i,y_i,z_i]]
+from typing import List, Tuple, TypeVar
+# Magnetization Vector Typehints
+x_i = TypeVar('x_i', int, float)
+y_i = TypeVar('y_i', int, float)
+z_i = TypeVar('z_i', int, float)
+listOfPos = List[Tuple[x_i, y_i, z_i]]
 
-I=0.0 ## Default Current
-d=0.0 ## Default Diameter
+I = 0.0  # Default Current
+d = 0.0  # Default Diameter
 ######################################
 
 # %% IMPORTS
 from numpy import array, float64, ndarray
-from magpylib._lib.classes.base import LineCurrent
-from magpylib._lib.fields.Current_CircularLoop import Bfield_CircularCurrentLoop
-from magpylib._lib.fields.Current_Line import Bfield_CurrentLine
 from magpylib._lib.utility import getBField, rotateToCS
-
+from magpylib._lib.fields.Current_Line import Bfield_CurrentLine
+from magpylib._lib.fields.Current_CircularLoop import Bfield_CircularCurrentLoop
+from magpylib._lib.classes.base import LineCurrent
 
 # %% THE CIRCULAR CLASS
 class Circular(LineCurrent):
@@ -116,8 +115,27 @@ class Circular(LineCurrent):
         return getBField(Bfield_CircularCurrentLoop(self.current, self.dimension, rotatedPos),  # The B field
                          self)
 
+    def __repr__(self):
+        """
+         This is for the IPython Console
+        When you call a defined circular, this method shows you all its components.
+
+        Examples
+        --------
+        >>> from magpylib import source
+        >>> c = source.current.Circular(2.45, 3.1469, [4.4, 5.24, 0.5])
+        >>> c
+            name: Circular 
+            current: 2.45 A 
+            dimension: 3.1469mm 
+            position: x: 4.4mm, y: 5.24mm, z: 0.5mm 
+            angle: 0.0 Degrees 
+            axis: x: 0.0, y: 0.0, z: 1.0
+        """
+        return "name: {} \n current: {} A \n dimension: {}mm \n position: x: {}mm, y: {}mm, z: {}mm \n angle: {} Degrees \n axis: x: {}, y: {}, z: {}".format("Circular", self.current, self.dimension, *self.position, self.angle, *self.axis)
 
 # %% THE CIRCUAR CL CLASS
+
 
 class Line(LineCurrent):
     """ 
@@ -203,3 +221,21 @@ class Line(LineCurrent):
         rotatedPos = rotateToCS(pos, self)
         return getBField(Bfield_CurrentLine(rotatedPos, self.vertices, self.current),  # The B field
                          self)
+
+    def __repr__(self):
+        """
+        This is for the IPython Console
+        When you call a defined line, this method shows you all its components.
+
+        Examples
+        --------
+        >>> from magpylib import source
+        >>> l = source.current.Line(2.45, [[2, .35, 2], [10, 2, -4], [4, 2, 1], [102, 2, 7]], [4.4, 5.24, 0.5])
+        >>> l
+            name: Line 
+            current: 2.45 A 
+            position: x: 4.4mm, y: 5.24mm, z: 0.5mm 
+            angle: 0.0 Degrees 
+            axis: x: 0.0, y: 0.0, z: 1.0
+        """
+        return "name: {} \n current: {} A \n position: x: {}mm, y: {}mm, z: {}mm \n angle: {} Degrees \n axis: x: {}, y: {}, z: {}".format("Line", self.current, *self.position, self.angle, *self.axis)
