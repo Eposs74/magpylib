@@ -504,3 +504,22 @@ def test_GetSweepArray_multiprocessing_error():
         result = c.getBsweep(pos,multiprocessing=True)
         assert isinstance(result,ndarray), type_erMsg
         assert allclose(result,mockResult), errMsg  #check if the field results are the same as the mock results in the array
+
+def test_displaySystem():
+     # Check if all shapes are recognized and can be handeled by the class
+     # Check if marker inputs are acceptable
+    from magpylib import source
+    s1 = source.magnet.Box([1,1,1],[1,1,1],pos=(5,5,5))
+    s2 = source.magnet.Cylinder([1,1,1], [2,9], pos=(5,5,5))
+    s3 = source.magnet.Sphere([1,1,1], 3, pos=(5,5,5))
+    s4 = source.current.Circular(2.45, 3 , pos=(5,5,5))
+    s5 = source.current.Line(2.45, [[2,.35,2],[10,2,-4],[4,2,1],[102,2,7]],pos=(5,5,5))
+    s6 = source.moment.Dipole([1,1,1], pos=(5,5,5))
+
+    a = Collection(s1, s2, s3, s4, s5, s6)
+    markers = [[0,0,0],    # int
+               [.1,.1,.1], # float
+               s1.position, s2.position, s3.position, s4.position, s5.position, s6.position] # float64
+
+    a.displaySystem(markers,suppress=True, direc=True, subplotAx=None)
+

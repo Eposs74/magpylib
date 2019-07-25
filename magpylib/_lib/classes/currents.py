@@ -232,11 +232,11 @@ class Line(LineCurrent):
         >>> from magpylib import source
         >>> l = source.current.Line(2.45, [[2, .35, 2], [10, 2, -4], [4, 2, 1], [102, 2, 7]], [4.4, 5.24, 0.5])
         >>> l
-            type: current.Line 
-            current: 2.45 
-            dimensions: vertices
-            position: x: 4.4, y: 5.24, z: 0.5
-            angle: 0.0 
+            name: Line 
+            current: 2.45 A 
+            position: x: 4.4mm, y: 5.24mm, z: 0.5mm 
+            angle: 0.0 Degrees 
             axis: x: 0.0, y: 0.0, z: 1.0
         """
-        return "type: {} \n current: {} \n dimensions: vertices \n position: x: {}, y: {}, z: {} \n angle: {}  \n axis: x: {}, y: {}, z: {}".format("current.Line", self.current, *self.position, self.angle, *self.axis)
+        return "name: {} \n current: {} A \n position: x: {}mm, y: {}mm, z: {}mm \n angle: {} Degrees \n axis: x: {}, y: {}, z: {}".format("Line", self.current, *self.position, self.angle, *self.axis)
+
